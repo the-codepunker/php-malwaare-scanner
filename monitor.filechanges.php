@@ -30,7 +30,7 @@ foreach ($all_files as $a => $value) {
     foreach ($rules as $rule_type_key => $type) {
         foreach ($type as $c => $rule) {
             // pass the generic rules
-            if(preg_match('/eval\((base64|eval|\$_|\$\$|\$[A-Za-z_0-9\{]*(\(|\{|\[))/i',$contents) === 1) {
+            if(preg_match('/eval\((base64|eval|\$_|\$\$|\$[A-Za-z_0-9\{]*(\(|\{|\[))/i',$content) === 1) {
                 $potentially_infected[$rule_type_key . '_' . $c] = $value;
             }
 
