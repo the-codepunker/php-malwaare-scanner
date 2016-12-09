@@ -29,5 +29,5 @@ Installation
             ];
     ```
 
-6. Execute the file into a cron every X minutes
-7. Let's hope you won't receive any infections report - ever :)
+6. Execute the monitor.filechanges.php file into a cron every X minutes (Ex: /usr/local/bin/php monitor.filechanges.php)
+7. Let's hope you won't receive any infections reports ... ever :)
