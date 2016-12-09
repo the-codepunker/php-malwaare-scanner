@@ -1,15 +1,12 @@
 <?php
 (php_sapi_name() == 'cli') or die("not allowed");
 
+require __DIR__ . '/configuration.php';
 require __DIR__ . '/rules.php';
 require __DIR__ . '/excludes.php';
 
 $all_files = [];
 $potentially_infected = [];
-$active = 1;
-$root = '/home/';
-$time = 5;
-$server = 'S2.CODEPUNKER.COM';
 
 exec('cd '.$root.' && find . -type f -name \'*.php\' -mmin -$(('.$time.'))', $all_files);
 
@@ -73,8 +70,9 @@ $mailreport .= "\n===================\n";
 
 if (!empty($potentially_infected) || !empty($all_files)) {
     if($active) {
-        mail("danijelu@gmail.com", "File change report - created by DanielG", $mailreport);
-        mail("cosmin@codepunker.com", "File change report - created by DanielG", $mailreport);
+        foreach ($emails as $key => $value) {
+            mail($value, "File change report", $mailreport);
+        }
     }
     echo $mailreport;
 } else {
