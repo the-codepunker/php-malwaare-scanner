@@ -4,6 +4,7 @@
 require __DIR__ . '/configuration.php';
 require __DIR__ . '/rules.php';
 require __DIR__ . '/excludes.php';
+require __DIR__ . '/functions.php';
 
 $all_files = [];
 $potentially_infected = [];
@@ -51,19 +52,27 @@ foreach ($all_files as $a => $value) {
 }
 
 $report = array();
-$report[] = "PLEASE READ! Potentially infected files in the past {$time} minutes on {$server} ";
-$report[] = "\n===================\n";
 
 $report_temp = '';
 foreach ($potentially_infected as $key => $value) {
     $report_temp .= PHP_EOL . $key . ": " . PHP_EOL . $value . PHP_EOL;
 }
-$report[] = $report_temp;
 
-$report[] = "PHP file in the past {$time} minutes on {$server} ";
-$report[] = "\n===================\n";
+if(!empty($report_temp)) {
+    $report[] = "PLEASE READ! Potentially infected files in the past {$time} minutes on {$server} ";
+    $report[] = "\n===================\n";
+    $report[] = $report_temp;
+}
 
-$report[] = implode("\n", $all_files);
+if(!empty($all_files)) {
+    $report[] = "PHP files modified in the past {$time} minutes on {$server} ";
+    $report[] = "\n===================\n";
+    $report[] = implode("\n", $all_files);
+}
+
+if(empty($report_temp) && empty($all_files)) {
+    $report[] = "You are all good - there are no modified or infected files on {$server}";
+}
 
 $mailreport = implode("\n", $report);
 $mailreport .= "\n===================\n";
@@ -74,7 +83,7 @@ if (!empty($potentially_infected) || !empty($all_files)) {
             mail($value, "File change report", $mailreport);
         }
     }
-    echo $mailreport;
+    echo PHP_EOL . colorset("Attention: ", "red+bold") . PHP_EOL . $mailreport;
 } else {
-    echo $mailreport;
+    echo PHP_EOL . colorset("Success: ", "green+bold") . PHP_EOL . $mailreport;
 }
