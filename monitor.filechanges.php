@@ -18,6 +18,7 @@ $mailreport = "\n===================\n";
 foreach ($all_files as $a => $value) {
     foreach ($excludes as $exclude) {
         if(stripos($value, $exclude))
+            unset($all_files[$a]);
             continue;
     }
 
