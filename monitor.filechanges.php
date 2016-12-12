@@ -15,10 +15,14 @@ $mailreport = "\n===================\n";
 
 foreach ($all_files as $a => $value) {
     foreach ($excludes as $exclude) {
-        if(stripos($value, $exclude))
+        if(stripos($value, $exclude)) {
             unset($all_files[$a]);
             continue;
+        }
     }
+}
+
+foreach ($all_files as $a => $value) {
 
     if(!file_exists($root . $value)) {
         echo "File {$value} skipped ... no longer exists" . PHP_EOL;
